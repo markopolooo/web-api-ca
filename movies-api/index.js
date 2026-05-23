@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import moviesRouter from './api/movies';  
 import express from 'express';
 import './db';
 // other imports
@@ -23,14 +24,16 @@ const port = process.env.PORT;
 app.use(cors());
 
 
-app.use(express.static('public'));
+
 
 app.use(express.json());
+
+app.use('/api/movies', moviesRouter); 
 
 //Users router
 app.use('/api/users', usersRouter);
 
-
+app.use(express.static('public'));
 
 app.use(errHandler);
 
