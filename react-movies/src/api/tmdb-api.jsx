@@ -2,7 +2,7 @@ export const getMovies = ({ queryKey }) => {
     const [, pagePart] = queryKey;
   const { page } = pagePart;
   return fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
+    `http://localhost:8080/api/movies/discover`
   ).then((response) => {
     if (!response.ok) {
       return response.json().then((error) => {
