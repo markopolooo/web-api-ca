@@ -226,3 +226,36 @@ export const getPopularActors = () => {
     throw error;
   });
 };
+
+export const addToFavourites = async (movieId, userId) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch('http://localhost:8080/api/favourites', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        body: JSON.stringify({ movieId, userId })
+    });
+    return response.json();
+};
+
+export const getFavourites = async (userId) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`http://localhost:8080/api/favourites/${userId}`, {
+        headers: {
+            'Authorization': token
+        }
+    });
+    return response.json();
+};
+
+export const removeFromFavourites = async (userId, movieId) => {
+    const token = localStorage.getItem('token');
+    await fetch(`http://localhost:8080/api/favourites/${userId}/${movieId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': token
+        }
+    });
+};

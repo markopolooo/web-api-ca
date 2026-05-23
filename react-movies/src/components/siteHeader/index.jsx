@@ -15,6 +15,7 @@ import MovieIcon from "@mui/icons-material/Movie";
 import Badge from "@mui/material/Badge";
 import { useContext } from "react";
 import { MoviesContext } from "../../contexts/moviesContext";
+import { AuthContext } from "../../contexts/authContext";
 import { Link } from "react-router";
 
 //const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
@@ -47,6 +48,7 @@ const SiteHeader = () => {
   const navigate = useNavigate();
 
   const { favorites, mustWatch } = useContext(MoviesContext);
+  const { isAuthenticated, userName, signout } = useContext(AuthContext);
 
  const menuOptions = [
   { label: "Home", path: "/" },
@@ -148,6 +150,19 @@ const SiteHeader = () => {
                     </Badge>
                   </NavButton>
                 ))}
+                {isAuthenticated ? (
+                  <>
+                    <Typography sx={{ color: "rgba(255,255,255,0.7)", mx: 1 }}>
+                      Welcome, {userName}!
+                    </Typography>
+                    <NavButton onClick={signout}>Sign Out</NavButton>
+                  </>
+                ) : (
+                  <>
+                    <NavButton onClick={() => navigate("/login")}>Login</NavButton>
+                    <NavButton onClick={() => navigate("/signup")}>Sign Up</NavButton>
+                  </>
+                )}
               </>
             )}
         </Toolbar>

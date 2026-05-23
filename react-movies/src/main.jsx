@@ -9,6 +9,10 @@ import SiteHeader from './components/siteHeader'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import MoviesContextProvider from "./contexts/moviesContext";
+import AuthContextProvider from "./contexts/authContext";
+import ProtectedRoutes from "./protectedRoutes";
+import LoginPage from "./pages/loginPage";
+import SignupPage from "./pages/signupPage";
 import AddMovieReviewPage from './pages/addMovieReviewPage'
 import UpcomingMoviesPage from "./pages/upcomingMoviesPage";
 import PopularMoviesPage from "./pages/popularMoviesPage";
@@ -62,9 +66,12 @@ const App = () => {
     <CssBaseline />
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+      <AuthContextProvider>
         <MoviesContextProvider>
            <SiteHeader />
           <Routes>
+            <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
             <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
             <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
             <Route path="/movies/popular" element={<PopularMoviesPage />} />
@@ -76,12 +83,17 @@ const App = () => {
             <Route path="/reviews/:id" element={ <MovieReviewPage /> } />
             <Route path="/movies/:id" element={<MoviePage />} />
             <Route path="/" element={<HomePage />} />
+            <Route element={<ProtectedRoutes />}>
+                  <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
+                  <Route path="/reviews/form" element={<AddMovieReviewPage />} />
+                </Route>
             <Route path="*" element={ <Navigate to="/" /> } />
                     <Route path="/reviews/form" element={ <AddMovieReviewPage /> } />
                     
 
           </Routes>
         </MoviesContextProvider>
+        </AuthContextProvider>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
