@@ -1,3 +1,4 @@
+// Home page - displays discover/trending movies with pagination
 import React, { useState } from "react";
 import { getMovies } from "../api/tmdb-api";
 import PageTemplate from '../components/templateMovieListPage';
@@ -8,26 +9,27 @@ import Pagination from "@mui/material/Pagination";
 import Box from "@mui/material/Box";
 
 const HomePage = (props) => {
-const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1);
+  // Fetch discover movies using React Query for caching and state management
   const { data, error, isPending, isError  } = useQuery({
     queryKey: ['discover', { page }],
     queryFn: getMovies,
   })
-  
+
   if (isPending) {
     return <Spinner />
   }
 
   if (isError) {
     return <h1>{error.message}</h1>
-  }  
-  
+  }
+
   const movies = data.results;
 
-  // Redundant, but necessary to avoid app crashing.
+  // Store favorites in localStorage for persistence
   const favorites = movies.filter(m => m.favorite)
   localStorage.setItem('favorites', JSON.stringify(favorites))
-  const addToFavorites = (movieId) => true 
+  const addToFavorites = (movieId) => true
 
      return (
       <>

@@ -1,3 +1,4 @@
+// Application entry point - sets up routing, contexts, theming, and React Query
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Navigate, Routes } from "react-router";
@@ -23,17 +24,19 @@ import PersonDetailsPage from "./pages/personDetailsPage";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import ActorsPage from "./pages/actorsPage";
-  
+
+// React Query client configuration - caches data for 1 hour
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 360000,
-      refetchInterval: 360000, 
+      refetchInterval: 360000,
       refetchOnWindowFocus: false
     },
   },
 });
 
+// Dark theme configuration with purple/blue color scheme
 const theme = createTheme({
   palette: {
     mode: "dark",
@@ -70,27 +73,28 @@ const App = () => {
         <MoviesContextProvider>
            <SiteHeader />
           <Routes>
+            {/* Public routes */}
             <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
-            <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
+            <Route path="/signup" element={<SignupPage />} />
             <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
             <Route path="/movies/popular" element={<PopularMoviesPage />} />
             <Route path="/movies/top-rated" element={<TopRatedMoviesPage />} />
             <Route path="/movies/now-playing" element={<NowPlayingMoviesPage />} />
-            <Route path="/movies/mustwatch" element={<MustWatchPage />} />
             <Route path="/actors" element={<ActorsPage />} />
             <Route path="/person/:id" element={<PersonDetailsPage />} />
             <Route path="/reviews/:id" element={ <MovieReviewPage /> } />
             <Route path="/movies/:id" element={<MoviePage />} />
             <Route path="/" element={<HomePage />} />
-            <Route element={<ProtectedRoutes />}>
-                  <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
-                  <Route path="/reviews/form" element={<AddMovieReviewPage />} />
-                </Route>
-            <Route path="*" element={ <Navigate to="/" /> } />
-                    <Route path="/reviews/form" element={ <AddMovieReviewPage /> } />
-                    
 
+            {/* Protected routes - require authentication */}
+            <Route element={<ProtectedRoutes />}>
+              <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
+              <Route path="/movies/mustwatch" element={<MustWatchPage />} />
+              <Route path="/reviews/form" element={<AddMovieReviewPage />} />
+            </Route>
+
+            {/* Catch-all - redirect to home */}
+            <Route path="*" element={ <Navigate to="/" /> } />
           </Routes>
         </MoviesContextProvider>
         </AuthContextProvider>
@@ -101,7 +105,6 @@ const App = () => {
   );
 };
 
-
-
+// Render app to DOM
 const rootElement = createRoot( document.getElementById("root") )
 rootElement.render(<App />);

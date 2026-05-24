@@ -1,3 +1,4 @@
+// Watch list icon button - adds movie to user's must-watch list
 import React, { useContext } from "react";
 import IconButton from "@mui/material/IconButton";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
@@ -6,6 +7,7 @@ import { MoviesContext } from "../../contexts/moviesContext";
 const AddToWatchListIcon = ({ movie }) => {
   const context = useContext(MoviesContext);
 
+  // Handle adding movie to watch list via context
   const handleAddToMustWatch = (e) => {
     e.preventDefault();
     context.addToMustWatch(movie);

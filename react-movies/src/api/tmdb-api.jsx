@@ -1,3 +1,6 @@
+// TMDB API client functions - fetches movie, actor, and related data from TMDB and local API
+
+// Get discover movies from local API (serves as home page content)
 export const getMovies = ({ queryKey }) => {
     const [, pagePart] = queryKey;
   const { page } = pagePart;
@@ -16,9 +19,8 @@ export const getMovies = ({ queryKey }) => {
   });
 };
 
-
+// Get detailed information for a specific movie
 export const getMovie = (args) => {
-  //console.log(args)
   const [, idPart] = args.queryKey;
   const { id } = idPart;
   return fetch(
@@ -36,8 +38,8 @@ export const getMovie = (args) => {
  });
 };
 
-
-  export const getGenres = () => {
+// Get all movie genres
+export const getGenres = () => {
     return fetch(
       "https://api.themoviedb.org/3/genre/movie/list?api_key=" +
         import.meta.env.VITE_TMDB_KEY +
@@ -55,8 +57,8 @@ export const getMovie = (args) => {
    });
   };
 
-
-  export const getMovieImages = ({ queryKey }) => {
+// Get poster and backdrop images for a movie
+export const getMovieImages = ({ queryKey }) => {
     const [, idPart] = queryKey;
     const { id } = idPart;
     return fetch(
@@ -74,8 +76,8 @@ export const getMovie = (args) => {
    });
   };
 
-
-  export const getMovieReviews = ({ queryKey }) => {
+// Get external reviews for a specific movie
+export const getMovieReviews = ({ queryKey }) => {
     const [, idPart] = queryKey;
     const { id } = idPart;
     return fetch(
@@ -93,7 +95,8 @@ export const getMovie = (args) => {
    });
   };
 
-  export const getUpcomingMovies = () => {
+// Get upcoming movies (releases coming soon)
+export const getUpcomingMovies = () => {
   return fetch(
     `https://api.themoviedb.org/3/movie/upcoming?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
   ).then((response) => {
@@ -109,6 +112,7 @@ export const getMovie = (args) => {
   });
 };
 
+// Get popular movies (currently trending)
 export const getPopularMovies = () => {
   return fetch(
     `https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
@@ -125,6 +129,7 @@ export const getPopularMovies = () => {
   });
 };
 
+// Get top-rated movies of all time
 export const getTopRatedMovies = () => {
   return fetch(
     `https://api.themoviedb.org/3/movie/top_rated?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
@@ -141,6 +146,7 @@ export const getTopRatedMovies = () => {
   });
 };
 
+// Get movies currently in theaters
 export const getNowPlayingMovies = () => {
   return fetch(
     `https://api.themoviedb.org/3/movie/now_playing?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
@@ -157,6 +163,7 @@ export const getNowPlayingMovies = () => {
   });
 };
 
+// Get movies recommended based on a specific movie
 export const getMovieRecommendations = ({ queryKey }) => {
   const [, idPart] = queryKey;
   const { id } = idPart;
@@ -175,6 +182,7 @@ export const getMovieRecommendations = ({ queryKey }) => {
   });
 };
 
+// Get cast and crew for a movie
 export const getMovieCast = ({ queryKey }) => {
   const [, idPart] = queryKey;
   const { id } = idPart;
@@ -193,6 +201,7 @@ export const getMovieCast = ({ queryKey }) => {
   });
 };
 
+// Get detailed information for an actor
 export const getPersonDetails = ({ queryKey }) => {
   const [, idPart] = queryKey;
   const { id } = idPart;
@@ -211,6 +220,7 @@ export const getPersonDetails = ({ queryKey }) => {
   });
 };
 
+// Get popular actors/cast members
 export const getPopularActors = () => {
   return fetch(
     `https://api.themoviedb.org/3/person/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
@@ -227,6 +237,7 @@ export const getPopularActors = () => {
   });
 };
 
+// Add movie to user's favorites (requires authentication)
 export const addToFavourites = async (movieId, userId) => {
     const token = localStorage.getItem('token');
     const response = await fetch('http://localhost:8080/api/favourites', {
@@ -240,6 +251,7 @@ export const addToFavourites = async (movieId, userId) => {
     return response.json();
 };
 
+// Get all favorite movies for a user
 export const getFavourites = async (userId) => {
     const token = localStorage.getItem('token');
     const response = await fetch(`http://localhost:8080/api/favourites/${userId}`, {
@@ -250,6 +262,7 @@ export const getFavourites = async (userId) => {
     return response.json();
 };
 
+// Remove movie from user's favorites
 export const removeFromFavourites = async (userId, movieId) => {
     const token = localStorage.getItem('token');
     await fetch(`http://localhost:8080/api/favourites/${userId}/${movieId}`, {

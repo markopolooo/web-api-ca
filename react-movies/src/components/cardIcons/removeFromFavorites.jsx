@@ -1,3 +1,4 @@
+// Remove from favorites icon button - removes movie from user's favorites
 import React, { useContext } from "react";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -6,6 +7,7 @@ import { MoviesContext } from "../../contexts/moviesContext";
 const RemoveFromFavoritesIcon = ({ movie }) => {
   const context = useContext(MoviesContext);
 
+  // Handle removing movie from favorites via context
   const handleRemoveFromFavorites = (e) => {
     e.preventDefault();
     context.removeFromFavorites(movie);

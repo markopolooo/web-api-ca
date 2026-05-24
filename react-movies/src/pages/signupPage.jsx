@@ -1,3 +1,4 @@
+// Sign up page - creates new user account with username and password
 import { useContext, useState } from "react";
 import { Navigate, Link } from "react-router";
 import { AuthContext } from '../contexts/authContext';
@@ -8,6 +9,7 @@ const SignupPage = () => {
     const [password, setPassword] = useState("");
     const [passwordAgain, setPasswordAgain] = useState("");
 
+    // Register new user with password confirmation
     const register = async () => {
         if (password !== passwordAgain) {
             alert("Passwords don't match!");
@@ -21,6 +23,7 @@ const SignupPage = () => {
         }
     };
 
+    // Redirect to home if already logged in
     if (context.isAuthenticated) {
         return <Navigate to="/" />;
     }

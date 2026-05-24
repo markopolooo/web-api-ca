@@ -1,3 +1,4 @@
+// Site header/navigation bar - displays app title, menu, and user auth status
 import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -18,13 +19,14 @@ import { MoviesContext } from "../../contexts/moviesContext";
 import { AuthContext } from "../../contexts/authContext";
 import { Link } from "react-router";
 
-//const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
+// Custom styled AppBar with gradient background
 const StyledAppBar = styled(AppBar)({
   background: "linear-gradient(135deg, #0f0c29, #302b63, #24243e)",
   boxShadow: "0 4px 20px rgba(100, 60, 255, 0.4)",
   borderBottom: "1px solid rgba(255,255,255,0.08)",
 });
 
+// Custom styled navigation buttons with hover effects
 const NavButton = styled(Button)({
   color: "#fff",
   fontSize: "0.8rem",
@@ -38,34 +40,40 @@ const NavButton = styled(Button)({
     color: "#c084fc",
   },
 });
+
 const SiteHeader = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  
+
   const navigate = useNavigate();
 
+  // Get favorites and mustWatch counts from context
   const { favorites, mustWatch } = useContext(MoviesContext);
+  // Get authentication status from context
   const { isAuthenticated, userName, signout } = useContext(AuthContext);
 
- const menuOptions = [
-  { label: "Home", path: "/" },
-  { label: "Favorites", path: "/movies/favorites", badge: favorites.length },
-  { label: "Must Watch", path: "/movies/mustwatch", badge: mustWatch.length },
-  { label: "Upcoming", path: "/movies/upcoming" },
-  { label: "Popular", path: "/movies/popular" },
-  { label: "Top Rated", path: "/movies/top-rated" },
-  { label: "Now Playing", path: "/movies/now-playing" },
-  { label: "Actors", path: "/actors" },
-];
+  // Menu options with paths and optional badges
+  const menuOptions = [
+    { label: "Home", path: "/" },
+    { label: "Favorites", path: "/movies/favorites", badge: favorites.length },
+    { label: "Must Watch", path: "/movies/mustwatch", badge: mustWatch.length },
+    { label: "Upcoming", path: "/movies/upcoming" },
+    { label: "Popular", path: "/movies/popular" },
+    { label: "Top Rated", path: "/movies/top-rated" },
+    { label: "Now Playing", path: "/movies/now-playing" },
+    { label: "Actors", path: "/actors" },
+  ];
 
+  // Navigate to selected menu item
   const handleMenuSelect = (pageURL) => {
     setAnchorEl(null);
     navigate(pageURL);
   };
 
+  // Open mobile menu
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -94,6 +102,7 @@ const SiteHeader = () => {
           </Typography>
             {isMobile ? (
               <>
+                {/* Mobile menu - hamburger icon */}
                 <IconButton
                   aria-label="menu"
                   aria-controls="menu-appbar"
@@ -130,6 +139,7 @@ const SiteHeader = () => {
               </>
             ) : (
               <>
+                {/* Desktop menu - horizontal nav buttons with badges */}
                 {menuOptions.map((opt) => (
                   <NavButton
                     key={opt.label}
@@ -150,6 +160,7 @@ const SiteHeader = () => {
                     </Badge>
                   </NavButton>
                 ))}
+                {/* Auth buttons - show login/signup or welcome message and logout */}
                 {isAuthenticated ? (
                   <>
                     <Typography sx={{ color: "rgba(255,255,255,0.7)", mx: 1 }}>
@@ -167,7 +178,6 @@ const SiteHeader = () => {
             )}
         </Toolbar>
       </StyledAppBar>
-    {/* <Offset /> */}
     </>
   );
 };

@@ -1,5 +1,7 @@
+// Fetch movie data from The Movie Database (TMDB) API
 import fetch from 'node-fetch';
 
+// Get discover movies from TMDB - returns popular movies for the home page
 export const getMovies = async () => {
     const response = await fetch(
         `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=1`

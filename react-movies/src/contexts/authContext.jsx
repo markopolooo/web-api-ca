@@ -1,16 +1,20 @@
+// Authentication context - manages user login state and authentication logic
 import { useState, createContext } from "react";
 
 export const AuthContext = createContext(null);
 
 const AuthContextProvider = (props) => {
+  // Check if token exists in localStorage from previous session
   const existingToken = localStorage.getItem("token");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState("");
 
+  // Store JWT token in localStorage
   const setToken = (data) => {
     localStorage.setItem("token", data);
   }
 
+  // Login user with username and password, returns JWT token
   const authenticate = async (username, password) => {
     const response = await fetch("http://localhost:8080/api/users", {
       method: "POST",
@@ -26,6 +30,7 @@ const AuthContextProvider = (props) => {
     }
   };
 
+  // Register new user with username and password
   const register = async (username, password) => {
     const response = await fetch("http://localhost:8080/api/users?action=register", {
       method: "POST",
@@ -36,6 +41,7 @@ const AuthContextProvider = (props) => {
     return result.success;
   };
 
+  // Logout user - clear authentication state and remove token
   const signout = () => {
     setTimeout(() => setIsAuthenticated(false), 100);
     localStorage.removeItem("token");

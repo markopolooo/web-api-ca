@@ -1,3 +1,4 @@
+// Favorites page - displays all of user's favorite movies with review and remove options
 import React, { useContext } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { MoviesContext } from "../contexts/moviesContext";
@@ -10,7 +11,7 @@ import WriteReview from "../components/cardIcons/writeReview";
 const FavoriteMoviesPage = () => {
   const {favorites: movieIds } = useContext(MoviesContext);
 
-  // Create an array of queries and run in parallel.
+  // Fetch all favorite movies in parallel using React Query
   const favoriteMovieQueries = useQueries({
     queries: movieIds.map((movieId) => {
       return {
@@ -19,14 +20,15 @@ const FavoriteMoviesPage = () => {
       }
     })
   });
-  
-  // Check if any of the parallel queries is still loading.
+
+  // Check if any queries are still loading
   const isPending = favoriteMovieQueries.find((m) => m.isPending === true);
 
   if (isPending) {
     return <Spinner />;
   }
 
+  // Transform query results into movie objects with genre_ids
   const movies = favoriteMovieQueries.map((q) => {
     q.data.genre_ids = q.data.genres.map(g => g.id)
     return q.data
