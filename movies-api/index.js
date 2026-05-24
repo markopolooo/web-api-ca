@@ -6,7 +6,7 @@ import './db';
 import cors from 'cors';
 import usersRouter from './api/users';
 import authenticate from './authenticate';
-import favouritesRouter from './api/favourites';
+import favouritesRouter from './api/favourites/index.js';
 
 dotenv.config();
 
